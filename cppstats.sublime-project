@@ -1,0 +1,17 @@
+{
+    "folders":
+    [
+        {
+            "path": "/Users/andreaslangs/Shares/NAS/Dev/python/cppstats"
+        }
+    ],
+    "build_systems":
+    [
+        {
+            "name": "cppstats",
+            "env": {"DYLD_LIBRARY_PATH":"/Users/andreaslangs/Shares/NAS/Dev/clang+llvm-3.8.0-x86_64-apple-darwin/lib"},
+            "path":"/$project_path/../venvs/cppstats/bin",
+            "cmd": ["$project_path/../venvs/cppstats/bin/python3.5", "-u", "$file"]
+        }
+    ]
+}
