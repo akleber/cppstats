@@ -1,3 +1,8 @@
+Inspration taken from
+---------------------
+
+https://github.com/sztomi/code-generator
+
 venv setup
 ----------
 
