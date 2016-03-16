@@ -10,7 +10,7 @@
         {
             "name": "cppstats",
             "env": {"DYLD_LIBRARY_PATH":"/Users/andreaslangs/Shares/NAS/Dev/clang+llvm-3.8.0-x86_64-apple-darwin/lib",
-            "PYTHONPATH":"/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/cppstats"},
+                    "PYTHONPATH":"/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/cppstats"},
             "path":"/Users/andreaslangs/Shares/NAS/Dev/python/venvs/cppstats/bin:$PATH",
             "cmd": ["python", "-u", "$file"],
 
