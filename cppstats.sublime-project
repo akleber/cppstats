@@ -9,9 +9,16 @@
     [
         {
             "name": "cppstats",
-            "env": {"DYLD_LIBRARY_PATH":"/Users/andreaslangs/Shares/NAS/Dev/clang+llvm-3.8.0-x86_64-apple-darwin/lib"},
-            "path":"/$project_path/../venvs/cppstats/bin",
-            "cmd": ["$project_path/../venvs/cppstats/bin/python3.5", "-u", "$file"]
+            "env": {"DYLD_LIBRARY_PATH":"/Users/andreaslangs/Shares/NAS/Dev/clang+llvm-3.8.0-x86_64-apple-darwin/lib"},            "path":"/Users/andreaslangs/Shares/NAS/Dev/python/venvs/cppstats/bin:$PATH",
+            "cmd": ["python", "-u", "$file"],
+
+            "variants": [
+                {   
+                    "name": "Run",
+                    "working_dir": "$project_path",
+                    "cmd": ["nosetests", "--exe"]
+                } 
+            ]
         }
     ]
 }

@@ -17,15 +17,8 @@ Commands
    mkdir cppstats
 
 
-Sublimetext2 support
+For Sublimetext 2 integration see cppstats.sublime-project
 
-::
-
-    {
-        //"env": {"PYTHONPATH":"/home/nebffa/Desktop"},
-        "path":"/Users/andreaslangs/Shares/NAS/Dev/python/venvs/cppstats/bin",
-        "cmd": ["/Users/andreaslangs/Shares/NAS/Dev/python/venvs/cppstats/bin/python3.5", "-u", "$file"]
-    }
 
 Additional pip3 packages
 ------------------------
