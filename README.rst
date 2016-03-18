@@ -40,8 +40,8 @@ http://docs.python-guide.org/en/latest/writing/structure/
 clang python binding
 --------------------
 
-Seems not to be compatible with python 3.5.1, so I used cindex.py from https://bitbucket.org/Anteru/python3-libclang
-
+Seems not to be compatible with python 3.5.1, so I used the modified binding from https://bitbucket.org/Anteru/python3-libclang
+It is installed in python3-libclang
 
 
 
