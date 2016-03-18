@@ -53,3 +53,6 @@ def process_tu(translation_unit):
 
     print("classes: %i, public methods: %i, private methods: %i, annotations count: %i" % (len(classes),sum_public_methods,sum_private_methods,sum_annotations))
 
+    print(*classes, sep='\n')
+
+
