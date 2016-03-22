@@ -449,7 +449,7 @@ class TokenGroup(object):
 
         token_group = TokenGroup(tu, tokens_memory, tokens_count)
 
-        for i in xrange(0, count):
+        for i in range(0, count):
             token = Token()
             token.int_data = tokens_array[i].int_data
             token.ptr_data = tokens_array[i].ptr_data
@@ -512,8 +512,8 @@ class BaseEnumeration(object):
         if value >= len(self.__class__._kinds):
             self.__class__._kinds += [None] * (value - len(self.__class__._kinds) + 1)
         if self.__class__._kinds[value] is not None:
-            raise ValueError,'{0} value {1} already loaded'.format(
-                str(self.__class__), value)
+            raise ValueError('{0} value {1} already loaded'.format(
+                str(self.__class__), value))
         self.value = value
         self.__class__._kinds[value] = self
         self.__class__._name_map = None
@@ -527,7 +527,7 @@ class BaseEnumeration(object):
         """Get the enumeration name of this cursor kind."""
         if self._name_map is None:
             self._name_map = {}
-            for key, value in self.__class__.__dict__.items():
+            for key, value in list(self.__class__.__dict__.items()):
                 if isinstance(value, self.__class__):
                     self._name_map[value] = key
         return self._name_map[self]
@@ -535,7 +535,7 @@ class BaseEnumeration(object):
     @classmethod
     def from_id(cls, id):
         if id >= len(cls._kinds) or cls._kinds[id] is None:
-            raise ValueError,'Unknown template argument kind %d' % id
+            raise ValueError('Unknown template argument kind %d' % id)
         return cls._kinds[id]
 
     def __repr__(self):
@@ -554,7 +554,7 @@ class CursorKind(BaseEnumeration):
     @staticmethod
     def get_all_kinds():
         """Return all CursorKind enumeration instances."""
-        return filter(None, CursorKind._kinds)
+        return [_f for _f in CursorKind._kinds if _f]
 
     def is_declaration(self):
         """Test if this is a declaration kind."""
@@ -1576,7 +1576,7 @@ class StorageClass(object):
         if value >= len(StorageClass._kinds):
             StorageClass._kinds += [None] * (value - len(StorageClass._kinds) + 1)
         if StorageClass._kinds[value] is not None:
-            raise ValueError,'StorageClass already loaded'
+            raise ValueError('StorageClass already loaded')
         self.value = value
         StorageClass._kinds[value] = self
         StorageClass._name_map = None
@@ -1589,7 +1589,7 @@ class StorageClass(object):
         """Get the enumeration name of this storage class."""
         if self._name_map is None:
             self._name_map = {}
-            for key,value in StorageClass.__dict__.items():
+            for key,value in list(StorageClass.__dict__.items()):
                 if isinstance(value,StorageClass):
                     self._name_map[value] = key
         return self._name_map[self]
@@ -1597,7 +1597,7 @@ class StorageClass(object):
     @staticmethod
     def from_id(id):
         if id >= len(StorageClass._kinds) or not StorageClass._kinds[id]:
-            raise ValueError,'Unknown storage class %d' % id
+            raise ValueError('Unknown storage class %d' % id)
         return StorageClass._kinds[id]
 
     def __repr__(self):
@@ -2332,7 +2332,9 @@ class TranslationUnit(ClangObject):
 
         args_array = None
         if len(args) > 0:
-            args_array = (c_char_p * len(args))(* args)
+            args_array = (c_char_p * len(args))()
+            for i,v in enumerate(args):
+                args_array [i] = v.encode ('utf-8')
 
         unsaved_array = None
         if len(unsaved_files) > 0:
@@ -2344,6 +2346,9 @@ class TranslationUnit(ClangObject):
                 unsaved_array[i].name = name
                 unsaved_array[i].contents = contents
                 unsaved_array[i].length = len(contents)
+
+        if filename is not None:
+            filename = filename.encode ('utf-8')
 
         ptr = conf.lib.clang_parseTranslationUnit(index, filename, args_array,
                                     len(args), unsaved_array,
@@ -2520,9 +2525,9 @@ class TranslationUnit(ClangObject):
                     # FIXME: It would be great to support an efficient version
                     # of this, one day.
                     value = value.read()
-                    print value
+                    print(value)
                 if not isinstance(value, str):
-                    raise TypeError,'Unexpected unsaved file contents.'
+                    raise TypeError('Unexpected unsaved file contents.')
                 unsaved_files_array[i].name = name
                 unsaved_files_array[i].contents = value
                 unsaved_files_array[i].length = len(value)
@@ -2584,9 +2589,9 @@ class TranslationUnit(ClangObject):
                     # FIXME: It would be great to support an efficient version
                     # of this, one day.
                     value = value.read()
-                    print value
+                    print(value)
                 if not isinstance(value, str):
-                    raise TypeError,'Unexpected unsaved file contents.'
+                    raise TypeError('Unexpected unsaved file contents.')
                 unsaved_files_array[i].name = name
                 unsaved_files_array[i].contents = value
                 unsaved_files_array[i].length = len(value)
@@ -2711,7 +2716,7 @@ class CompileCommand(object):
         Invariant : the first argument is the compiler executable
         """
         length = conf.lib.clang_CompileCommand_getNumArgs(self.cmd)
-        for i in xrange(length):
+        for i in range(length):
             yield conf.lib.clang_CompileCommand_getArg(self.cmd, i)
 
 class CompileCommands(object):
@@ -3520,7 +3525,7 @@ def register_functions(lib, ignore_errors):
     def register(item):
         return register_function(lib, item, ignore_errors)
 
-    map(register, functionList)
+    list(map(register, functionList))
 
 class Config:
     library_path = None
