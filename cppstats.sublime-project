@@ -2,22 +2,23 @@
     "folders":
     [
         {
-            "path": "/Users/andreaslangs/Shares/NAS/Dev/python/cppstats"
+            "path": "."
         }
     ],
     "build_systems":
     [
         {
             "name": "cppstats",
-            "env": {"DYLD_LIBRARY_PATH":"/Users/andreaslangs/Shares/NAS/Dev/clang+llvm-3.8.0-x86_64-apple-darwin/lib",
-                    "PYTHONPATH":"/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/cppstats:/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/python3-libclang"},
-            "path":"/Users/andreaslangs/Shares/NAS/Dev/python/venvs/cppstats/bin:$PATH",
+            "working_dir": "${project_path}",
+            "env": {"DYLD_LIBRARY_PATH":"./../../clang+llvm-3.8.0-x86_64-apple-darwin/lib",
+                    "PYTHONPATH":"./cppstats:./python3-libclang"},
+            "path": "../venvs/cppstats/bin:$PATH",
             "cmd": ["python", "-u", "$file"],
 
             "variants": [
                 {   
                     "name": "Run",
-                    "working_dir": "$project_path",
+                    "working_dir": "${project_path}",
                     "cmd": ["nosetests", "--exe", "-s"]
                 } 
             ]
