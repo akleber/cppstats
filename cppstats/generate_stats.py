@@ -3,6 +3,7 @@ import json
 import os
 import re
 import logging
+import multiprocessing
 
 #Stats = namedtuple('Stats', 'classes_count, method_count, member_count')
 
@@ -51,9 +52,9 @@ class Class(object):
                 m = Method(c)
                 self.methods.append(m)
 
-        dummy_classes = set()
-        dummy_classes.add(self)
-        print_statistics(dummy_classes)
+        #dummy_classes = set()
+        #dummy_classes.add(self)
+        #print_statistics(dummy_classes)
 
     def __repr__(self):
         return "%s" % (self.usr, )
@@ -125,23 +126,32 @@ def process_source_file(file, args):
 
     print_statistics(classes)
 
+def mp_worker(compile_commands_entry):
+    process_source_file(compile_commands_entry["file"], compile_commands_entry["command"])
+
 
 def process_compile_commands_db(file):
+    ''' The compile_commands.json is a list [] of dictionaries {}.
+    '''
     logging.debug('process_compile_commands_db: %s', file)
 
     with open(file) as db_file:    
         data = json.load(db_file)
 
-    for entry in data:
-        process_source_file(entry["file"], entry["command"])
+    #single process
+    #for entry in data:
+    #    process_source_file(entry["file"], entry["command"])
 
-    process_source_file(data[0]["file"], data[0]["command"])
+    #multiprocess
+    logging.info('cpu_count() = %d', multiprocessing.cpu_count())
+    p = multiprocessing.Pool()
+    p.map(mp_worker, data)
 
 if __name__ == '__main__':
-    #db_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'build', 'compile_commands.json')
-    #process_compile_commands_db(db_file)
+    db_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'build', 'compile_commands.json')
+    process_compile_commands_db(db_file)
 
-    source_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'include', 'json', 'writer.h')
+    #source_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'include', 'json', 'writer.h')
     #source_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'src', 'lib_json', 'json_reader.cpp')
-    process_source_file(source_file, "-I/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/tests/jsoncpp/include -I/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/tests/jsoncpp/src/lib_json/../../include   -std=c++11 -Wall -Wconversion -Wshadow -Werror=conversion -Werror=sign-compare -O3 -DNDEBUG -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+    #process_source_file(source_file, "-I/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/tests/jsoncpp/include -I/Users/andreaslangs/Shares/NAS/Dev/python/cppstats/tests/jsoncpp/src/lib_json/../../include   -std=c++11 -Wall -Wconversion -Wshadow -Werror=conversion -Werror=sign-compare -O3 -DNDEBUG -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
 
