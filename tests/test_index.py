@@ -1,6 +1,7 @@
 from clang.cindex import *
-import os
+Config.set_compatibility_check(True)
 
+import os
 kInputsDir = os.path.join(os.path.dirname(__file__), 'INPUTS')
 
 def test_create():
