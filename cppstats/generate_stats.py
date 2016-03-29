@@ -130,7 +130,7 @@ def mp_worker(compile_commands_entry):
     process_source_file(compile_commands_entry["file"], compile_commands_entry["command"])
 
 
-def process_compile_commands_db(file):
+def process_compile_commands_db(file, disables_multiple_processes=False):
     ''' The compile_commands.json is a list [] of dictionaries {}.
     '''
     logging.debug('process_compile_commands_db: %s', file)
@@ -138,14 +138,14 @@ def process_compile_commands_db(file):
     with open(file) as db_file:    
         data = json.load(db_file)
 
-    #single process
-    #for entry in data:
-    #    process_source_file(entry["file"], entry["command"])
+    if disables_multiple_processes:
+        for entry in data:
+            process_source_file(entry["file"], entry["command"])
+    else:
+        logging.info('cpu_count() = %d', multiprocessing.cpu_count())
+        p = multiprocessing.Pool()
+        p.map(mp_worker, data)
 
-    #multiprocess
-    logging.info('cpu_count() = %d', multiprocessing.cpu_count())
-    p = multiprocessing.Pool()
-    p.map(mp_worker, data)
 
 if __name__ == '__main__':
     db_file = os.path.join(os.path.dirname(__file__), '..', 'tests', 'jsoncpp', 'build', 'compile_commands.json')
