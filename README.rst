@@ -40,8 +40,8 @@ http://docs.python-guide.org/en/latest/writing/structure/
 clang python binding
 --------------------
 
-Seems not to be compatible with python 3.5.1, so I used the modified binding from https://bitbucket.org/Anteru/python3-libclang
-It is installed in python3-libclang
+Seems not to be compatible with python 3.5.1, so I ported the 3.8.0 bindings to Python 3 with 2to3 and https://bitbucket.org/Anteru/python3-libclang
+It is installed in python3-libclang.
 
 
 
@@ -57,3 +57,10 @@ Learning objectives
 - libclang python binding
   - http://eli.thegreenplace.net/2011/07/03/parsing-c-in-python-with-clang
   - http://szelei.me/code-generator/
+- docopt
+
+
+References
+----------
+- https://github.com/gklingler/CodeDependencyVisualizer
+- http://eli.thegreenplace.net/2011/07/03/parsing-c-in-python-with-clang
