@@ -1,15 +1,14 @@
 """cppstats.
 
 Usage:
-  cppstats.py [--no-mp] <compile_commands.json>
-  cppstats.py <source_file> <clang_arguments>
+  cppstats.py <compile_commands.json> <search_path>
+  cppstats.py <source_file> <search_path> <clang_arguments>
   cppstats.py (-h | --help)
   cppstats.py --version 
 
 Options:
   -h --help   Show this screen.
   --version   Show version.
-  --no-mp     No multiple processes.
 
 """
 
@@ -22,8 +21,11 @@ if __name__ == '__main__':
 
     print(arguments)
 
-    if arguments['<compile_commands.json>']:
-        generate_stats.process_compile_commands_db(os.path.abspath(arguments['<compile_commands.json>']), arguments['--no-mp'])
+    if arguments['<clang_arguments>']:
+        generate_stats.process_source_file(os.path.abspath(arguments['<source_file>']), 
+                                           arguments['<clang_arguments>'], 
+                                           os.path.abspath(arguments['<search_fpath>']))
     else:
-        process_source_file(os.path.abspath(arguments['<source_file>']), arguments['<clang_arguments>'])
+        generate_stats.process_compile_commands_db(os.path.abspath(arguments['<compile_commands.json>']), 
+                                                   os.path.abspath(arguments['<search_path>']))
 
